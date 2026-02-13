@@ -60,8 +60,8 @@ export function Header({ cartItems, onRemoveFromCart, onUpdateQuantity, onChecko
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 bg-card border-b border-border ${
-        scrolled ? 'shadow-lg' : ''
+      className={`sticky top-0 z-50 transition-all duration-300 bg-card border-b border-border/60 ${
+        scrolled ? 'shadow-md' : ''
       }`}
     >
       {/* ===================== MOBILE HEADER ===================== */}
@@ -123,16 +123,15 @@ export function Header({ cartItems, onRemoveFromCart, onUpdateQuantity, onChecko
           {/* Center: Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/15 transition-all duration-500 scale-[1.4] blur-sm" />
+              <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/15 transition-all duration-500 scale-[1.5] blur-sm" />
               <img
                 src="/logo.png"
                 alt="Ammamma Foods Logo"
-                className="h-14 w-auto relative z-10 transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-105 drop-shadow-md"
+                className="h-16 w-auto relative z-10 animate-logoEntrance transition-all duration-700 ease-in-out group-hover:rotate-[360deg] group-hover:scale-110 drop-shadow-md"
               />
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="text-lg font-black text-primary">AMMAMMA</span>
-              <span className="text-[10px] font-semibold text-primary/60 tracking-wide">FOODS</span>
+              <span className="text-lg font-black text-primary tracking-tight">AMMAMMA FOODS</span>
             </div>
           </Link>
 
@@ -155,23 +154,20 @@ export function Header({ cartItems, onRemoveFromCart, onUpdateQuantity, onChecko
       <div className="hidden lg:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo - large with professional pulse + spin animation */}
+            {/* Logo - large with professional animation */}
             <Link href="/" className="flex items-center gap-4 group flex-shrink-0">
               <div className="relative">
-                {/* Outer glow ring that pulses */}
-                <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/15 transition-all duration-700 scale-[1.6] blur-md group-hover:animate-pulse" />
-                {/* Inner ring */}
-                <div className="absolute inset-0 rounded-full border-2 border-transparent group-hover:border-primary/20 transition-all duration-500 scale-[1.3]" />
+                {/* Outer glow ring */}
+                <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/10 transition-all duration-700 scale-[1.7] blur-lg" />
+                {/* Spinning ring on hover */}
+                <div className="absolute inset-0 rounded-full border-2 border-transparent group-hover:border-primary/30 transition-all duration-700 scale-[1.35] group-hover:rotate-180" />
                 <img
                   src="/logo.png"
                   alt="Ammamma Foods Logo"
-                  className="h-[72px] w-auto relative z-10 transition-all duration-700 ease-in-out group-hover:rotate-[360deg] group-hover:scale-110 drop-shadow-md group-hover:drop-shadow-xl"
+                  className="h-[88px] w-auto relative z-10 animate-logoEntrance transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:rotate-[360deg] group-hover:scale-[1.12] drop-shadow-md group-hover:drop-shadow-xl"
                 />
               </div>
-              <div>
-                <span className="text-3xl font-black text-primary block tracking-tight leading-none">AMMAMMA FOODS</span>
-                <span className="text-xs font-semibold text-primary/60 tracking-wider">ammammafoods.store</span>
-              </div>
+              <span className="text-3xl font-black text-primary tracking-tight leading-none">AMMAMMA FOODS</span>
             </Link>
 
             {/* Center Navigation */}

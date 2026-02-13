@@ -12,6 +12,7 @@ import { useCart } from '@/hooks/use-cart';
 import {
   validateCoupon,
   calculateFinalAmount,
+  verifyDiscountIntegrity,
   type CouponValidationResult,
 } from '@/lib/coupons';
 import {
@@ -104,16 +105,25 @@ function CheckoutContent() {
 
     // ── Re-validate coupon before payment (CRITICAL) ────
     // Prevents race conditions where a coupon expires mid-checkout
+    // Also verifies discount integrity to prevent tampering
     if (couponApplied && couponResult?.coupon) {
-      const recheck = validateCoupon(couponResult.coupon.code, subtotal);
-      if (!recheck.valid) {
+      const integrity = verifyDiscountIntegrity(
+        couponResult.coupon.code,
+        subtotal,
+        couponResult.discountAmount
+      );
+
+      if (!integrity.verified) {
+        // Discount was tampered with or coupon is no longer valid
+        const recheck = validateCoupon(couponResult.coupon.code, subtotal);
+        if (!recheck.valid) {
+          setCouponResult(recheck);
+          setCouponApplied(false);
+          return; // Block payment - coupon no longer valid
+        }
+        // Coupon is still valid but discount amount changed - update it
         setCouponResult(recheck);
-        setCouponApplied(false);
-        return; // Block payment – coupon no longer valid
-      }
-      // Use the re-validated discount amount (never trust stale state)
-      if (recheck.discountAmount !== couponResult.discountAmount) {
-        setCouponResult(recheck);
+        return; // Force user to review the updated discount before paying
       }
     }
 
@@ -529,6 +539,11 @@ function CheckoutContent() {
                         <div className="flex items-start gap-2">
                           <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                           <div>
+                            {couponResult.couponTypeLabel && (
+                              <p className="text-[10px] font-bold text-green-500 uppercase tracking-wider mb-0.5">
+                                {couponResult.couponTypeLabel}
+                              </p>
+                            )}
                             <p className="text-sm font-bold text-green-700">
                               {couponResult.coupon?.code}
                             </p>
@@ -602,8 +617,8 @@ function CheckoutContent() {
                           Available Offers
                         </p>
                         {[
-                          { code: 'FRIEND10', desc: '10% off on orders above Rs.500' },
-                          { code: 'SUB6M20', desc: '20% off for 6-month subscribers' },
+                          { code: 'FRIEND10', desc: '10% off on orders above Rs.500', type: 'AFFILIATE MARKETING' },
+                          { code: 'SUB6M20', desc: '20% off for 6-month subscribers', type: '6 MONTH SUBSCRIPTION' },
                         ].map((hint) => (
                           <button
                             key={hint.code}
@@ -614,7 +629,10 @@ function CheckoutContent() {
                             }}
                             className="w-full text-left p-2 bg-muted/50 hover:bg-muted rounded-lg border border-dashed border-border transition-colors group"
                           >
-                            <span className="text-xs font-bold text-primary font-mono group-hover:underline">
+                            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
+                              {hint.type}
+                            </span>
+                            <span className="text-xs font-bold text-primary font-mono group-hover:underline block mt-0.5">
                               {hint.code}
                             </span>
                             <span className="text-[10px] text-muted-foreground block mt-0.5">
