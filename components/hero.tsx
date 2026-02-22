@@ -160,6 +160,13 @@ export function Hero() {
                 <Sprout className="w-4 sm:w-6 h-4 sm:h-6" />
                 Our Story
               </Link>
+              <Link
+                href="/cinematic"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/40 active:scale-95 flex-shrink-0"
+              >
+                Experience Cinematic
+                <ArrowRight className="w-4 sm:w-6 h-4 sm:h-6" />
+              </Link>
             </div>
           </div>
         </div>
