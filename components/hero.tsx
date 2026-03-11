@@ -3,8 +3,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { ArrowRight, Sprout } from 'lucide-react';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { pantryBoxes, products } from '@/lib/products';
 import GlareHover from '@/components/glare-hover';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const categories = [
   { label: 'Bachelor Box', image: '/products/garam-masala.svg', href: '/custom-box?box=combo-1' },
@@ -19,11 +23,56 @@ export function Hero() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+  const bgImageRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 4;
   const totalPages = Math.ceil(categories.length / itemsPerPage);
 
   useEffect(() => {
     setIsLoaded(true);
+
+    // Parallax effect for hero section
+    if (heroSectionRef.current && bgImageRef.current && contentRef.current) {
+      // Background image moves slower (parallax effect)
+      gsap.to(bgImageRef.current, {
+        yPercent: 50,
+        scrollTrigger: {
+          trigger: heroSectionRef.current,
+          start: 'top top',
+          end: 'bottom center',
+          scrub: 1,
+          markers: false,
+        },
+      });
+
+      // Content moves slightly faster for depth
+      gsap.to(contentRef.current, {
+        yPercent: -10,
+        scrollTrigger: {
+          trigger: heroSectionRef.current,
+          start: 'top top',
+          end: 'bottom center',
+          scrub: 1,
+        },
+      });
+
+      // Overlay fades in as you scroll
+      gsap.to(overlayRef.current, {
+        opacity: 0.8,
+        scrollTrigger: {
+          trigger: heroSectionRef.current,
+          start: 'top top',
+          end: 'center center',
+          scrub: 1,
+        },
+      });
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   useEffect(() => {
@@ -89,25 +138,39 @@ export function Hero() {
       </section>
 
       {/* ===================== DESKTOP HERO ===================== */}
-      <div className="relative w-full overflow-hidden hidden lg:block">
-        {/* Background Image with Dark Overlay */}
+      <div ref={heroSectionRef} className="relative w-full overflow-hidden hidden lg:block">
+        {/* Background Image with Dark Overlay - Parallax Base */}
         <div
+          ref={bgImageRef}
           className="absolute inset-0 opacity-50"
           style={{
             backgroundImage: 'url(/products/garam-masala.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
+            willChange: 'transform',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/40" />
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/40"
+          style={{
+            willChange: 'opacity',
+            opacity: 0.6,
+          }}
+        />
 
         {/* Animated Background Elements */}
         <div className="absolute top-20 right-20 w-48 h-48 bg-secondary rounded-full opacity-5 blur-3xl animate-pulse-soft" />
         <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary rounded-full opacity-5 blur-3xl animate-pulse-soft" />
 
-        {/* Content */}
-        <div className="relative z-10 flex min-h-screen items-center justify-start px-4 sm:px-6 md:px-12 lg:px-20">
+        {/* Content - Parallax Layer */}
+        <div
+          ref={contentRef}
+          className="relative z-10 flex min-h-screen items-center justify-start px-4 sm:px-6 md:px-12 lg:px-20"
+          style={{
+            willChange: 'transform',
+          }}
+        >
           <div className="w-full max-w-3xl space-y-6 md:space-y-8">
             {/* Subheading with Line */}
             <div
