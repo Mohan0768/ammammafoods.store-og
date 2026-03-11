@@ -138,7 +138,7 @@ export function Hero() {
       </section>
 
       {/* ===================== DESKTOP HERO ===================== */}
-      <div ref={heroSectionRef} className="relative w-full overflow-hidden hidden lg:block">
+      <div ref={heroSectionRef} className="relative w-full overflow-hidden hidden lg:block perspective-1000">
         {/* Background Image with Dark Overlay - Parallax Base */}
         <div
           ref={bgImageRef}
@@ -148,6 +148,7 @@ export function Hero() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             willChange: 'transform',
+            transform: 'translateZ(-50px)',
           }}
         />
         <div
@@ -156,12 +157,13 @@ export function Hero() {
           style={{
             willChange: 'opacity',
             opacity: 0.6,
+            transform: 'translateZ(0)',
           }}
         />
 
-        {/* Animated Background Elements */}
-        <div className="absolute top-20 right-20 w-48 h-48 bg-secondary rounded-full opacity-5 blur-3xl animate-pulse-soft" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary rounded-full opacity-5 blur-3xl animate-pulse-soft" />
+        {/* Animated 3D Background Elements */}
+        <div className="absolute top-20 right-20 w-48 h-48 bg-secondary rounded-full opacity-5 blur-3xl animate-pulse-soft animate-float-3d" style={{ animationDelay: '0s' }} />
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary rounded-full opacity-5 blur-3xl animate-pulse-soft animate-float-3d" style={{ animationDelay: '0.3s' }} />
 
         {/* Content - Parallax Layer */}
         <div
@@ -172,33 +174,35 @@ export function Hero() {
           }}
         >
           <div className="w-full max-w-3xl space-y-6 md:space-y-8">
-            {/* Subheading with Line */}
+            {/* Subheading with Line - 3D Layer */}
             <div
-              className={`flex items-center gap-3 transition-all duration-700 ${
+              className={`flex items-center gap-3 transition-all duration-700 animate-layer-3d-in ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
+              style={{ animationDelay: '0.1s', transform: 'translateZ(20px)' }}
             >
               <div className="h-1 w-16 bg-secondary rounded-full" />
               <span className="text-secondary font-bold tracking-widest text-sm uppercase">Curated Pantry Boxes</span>
             </div>
 
-            {/* Main Heading */}
+            {/* Main Heading - 3D Layer */}
             <h1
-              className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-tight text-white transition-all duration-700 delay-200 ${
+              className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-tight text-white transition-all duration-700 delay-200 animate-layer-3d-in ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
-              style={{ letterSpacing: '0.02em' }}
+              style={{ letterSpacing: '0.02em', animationDelay: '0.2s', transform: 'translateZ(40px)' }}
             >
               Your Perfect
               <br />
               <span className="font-bold">Pantry Box</span>
             </h1>
 
-            {/* Description */}
+            {/* Description - 3D Layer */}
             <p
-              className={`text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-2xl leading-relaxed transition-all duration-700 delay-300 ${
+              className={`text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-2xl leading-relaxed transition-all duration-700 delay-300 animate-layer-3d-in ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
+              style={{ animationDelay: '0.3s', transform: 'translateZ(30px)' }}
             >
               Handcrafted Indian masala boxes curated for every lifestyle. Pick your favorites, customize your box with at least 4 products, and pay only for what you select.
             </p>

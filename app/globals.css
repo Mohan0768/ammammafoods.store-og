@@ -256,6 +256,50 @@ body {
   }
 }
 
+/* 3D Layering Effects */
+@keyframes layer3DIn {
+  from {
+    opacity: 0;
+    transform: translateZ(-100px) rotateX(20deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0) rotateX(0deg);
+  }
+}
+
+@keyframes depthShift {
+  0%, 100% {
+    transform: translateZ(0px);
+  }
+  50% {
+    transform: translateZ(20px);
+  }
+}
+
+@keyframes floatIn3D {
+  from {
+    opacity: 0;
+    transform: translateZ(-80px) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0) translateY(0);
+  }
+}
+
+@keyframes cardTilt {
+  0% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(-5deg) rotateY(5deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  }
+}
+
 /* Cinematic Experience Animations */
 @keyframes blurFadeIn {
   from {
@@ -296,5 +340,26 @@ body {
   .animate-gradient-flow {
     animation: gradientFlow 3s ease infinite;
     background-size: 200% 100%;
+  }
+  .animate-layer-3d-in {
+    animation: layer3DIn 0.8s ease-out forwards;
+  }
+  .animate-depth-shift {
+    animation: depthShift 4s ease-in-out infinite;
+  }
+  .animate-float-3d {
+    animation: floatIn3D 0.9s ease-out forwards;
+  }
+  .animate-card-tilt {
+    animation: cardTilt 6s ease-in-out infinite;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .will-change-transform {
+    will-change: transform;
   }
 }
