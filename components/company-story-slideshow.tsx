@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const storySlides = [
   {
@@ -82,6 +86,39 @@ export function CompanyStorySlideshow() {
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Parallax effect on section scroll
+    if (sectionRef.current && contentRef.current && overlayRef.current) {
+      gsap.to(overlayRef.current, {
+        opacity: 0.7,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top center',
+          end: 'center center',
+          scrub: 1,
+        },
+      });
+
+      // Subtle content shift for depth
+      gsap.to(contentRef.current, {
+        yPercent: -5,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1,
+        },
+      });
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -118,6 +155,7 @@ export function CompanyStorySlideshow() {
 
   return (
     <section
+      ref={sectionRef}
       id="story"
       className="relative w-full overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
@@ -129,6 +167,7 @@ export function CompanyStorySlideshow() {
         <div
           key={`bg-${currentSlide}`}
           className={`absolute inset-0 bg-gradient-to-br ${slide.gradient} animate-kenBurns`}
+          style={{ willChange: 'opacity' }}
         />
 
         {/* Placeholder image overlay pattern */}
@@ -139,10 +178,18 @@ export function CompanyStorySlideshow() {
         }} />
 
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 bg-black/40"
+          style={{ willChange: 'opacity', opacity: 0.4 }}
+        />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 sm:px-12 lg:px-20 text-center">
+        <div
+          ref={contentRef}
+          className="relative z-10 flex flex-col items-center justify-center h-full px-6 sm:px-12 lg:px-20 text-center"
+          style={{ willChange: 'transform' }}
+        >
           {/* Chapter indicator */}
           <div
             key={`sub-${currentSlide}`}
