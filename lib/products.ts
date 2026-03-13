@@ -107,6 +107,31 @@ export const products: Product[] = [
   },
 ];
 
+export interface SubscriptionPlan {
+  id: string;
+  label: string;
+  discount: number;
+  description: string;
+  pricePerMonth: number;
+}
+
+export const subscriptionPlans: SubscriptionPlan[] = [
+  {
+    id: 'sub-3m',
+    label: '3 Month Plan',
+    discount: 10,
+    description: 'Save 10% on every order for 3 months',
+    pricePerMonth: 899,
+  },
+  {
+    id: 'sub-6m',
+    label: '6 Month Plan',
+    discount: 20,
+    description: 'Save 20% on every order for 6 months - Best Value!',
+    pricePerMonth: 799,
+  },
+];
+
 export const pantryBoxes: PantryBox[] = [
   {
     id: 'combo-1',

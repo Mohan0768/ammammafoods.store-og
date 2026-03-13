@@ -1,4 +1,7 @@
+'use client';
+
 import { useRef } from 'react';
+import type { CSSProperties } from 'react';
 
 const GlareHover = ({
   width = '500px',
@@ -55,8 +58,8 @@ const GlareHover = ({
     }
   };
 
-  const overlayStyle = {
-    position: 'absolute',
+  const overlayStyle: CSSProperties = {
+    position: 'absolute' as const,
     inset: 0,
     background: `linear-gradient(${glareAngle}deg,
         hsla(0,0%,0%,0) 60%,
@@ -65,7 +68,7 @@ const GlareHover = ({
     backgroundSize: `${glareSize}% ${glareSize}%, 100% 100%`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '-100% -100%, 0 0',
-    pointerEvents: 'none'
+    pointerEvents: 'none' as const,
   };
 
   return (
